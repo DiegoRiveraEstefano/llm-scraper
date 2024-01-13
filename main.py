@@ -48,7 +48,7 @@ async def ping():
     return "pong"
 
 
-@flask_app.post('/v1/chat/completions/')
+@flask_app.route('/v1/chat/completions/', methods=['GET', 'POST'])
 async def get_completion():
     response = await get_scrap_completion(request.json['model'], request.json['messages'])
     if response is None:
