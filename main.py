@@ -50,20 +50,22 @@ async def ping():
 
 @flask_app.route('/v1/chat/completions/', methods=['GET', 'POST'])
 async def get_completion():
-    response = await get_scrap_completion(request.json['model'], request.json['messages'])
-    if response is None:
-        return {'error': 'no completion available'}
-    return {
-        "choices": [
-            {
-                "index": 0,
-                "message": {
-                    "role": "assistant",
-                    "content": response,
+    if request.method == 'POST':
+        response = await get_scrap_completion(request.json['model'], request.json['messages'])
+        if response is None:
+            return {'error': 'no completion available'}
+        return {
+            "choices": [
+                {
+                    "index": 0,
+                    "message": {
+                        "role": "assistant",
+                        "content": response,
+                    }
                 }
-            }
-        ]
-    }
+            ]
+        }
+    return None
 
 
 app = WsgiToAsgi(flask_app)
