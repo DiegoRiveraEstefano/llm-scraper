@@ -56,6 +56,7 @@ async def ping():
 
 @flask_app.route('/v1/chat/completions/', methods=['GET', 'POST'], )
 async def get_completion():
+    print(request.method)
     if request.method == 'POST':
         response = await get_scrap_completion(request.json['model'], request.json['messages'], request.json['max_tokens'])
         if response is None:
