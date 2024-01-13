@@ -2,8 +2,10 @@ from asgiref.wsgi import WsgiToAsgi
 from flask import Flask, request
 from random import choice
 import g4f
+from flask_cors import CORS
 
 flask_app = Flask(__name__)
+cors = CORS(flask_app, resources={r"/v1/chat/completions/": {"origins": "*"}})
 
 providers = {
     'gpt-3.5-turbo': [
@@ -39,6 +41,11 @@ async def get_scrap_completion(model: str, messages: list) -> str or None:
         provider=choice(providers[model]),
     )
     return response
+
+
+@flask_app.get('/')
+async def ping():
+    return "pong"
 
 
 @flask_app.post('/v1/chat/completions/')
