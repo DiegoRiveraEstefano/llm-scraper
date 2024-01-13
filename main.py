@@ -31,16 +31,22 @@ allowed_models = [
 ]
 
 
-async def get_scrap_completion(model: str, messages: list) -> str or None:
+async def get_scrap_completion(model: str, messages: list, tokens: int) -> str or None:
     if not model in allowed_models:
         return None
 
-    response = await g4f.ChatCompletion.create_async(
-        model=model,
-        messages=messages,
-        provider=choice(providers[model]),
-    )
-    return response
+    try:
+        response = await g4f.ChatCompletion.create_async(
+            model=model,
+            messages=messages,
+            provider=choice(providers[model]),
+            max_tokens=tokens,
+        )
+    except:
+        response = await get_scrap_completion(model, messages, tokens)
+        return response
+    finally:
+        return response
 
 
 @flask_app.get('/')
@@ -48,10 +54,10 @@ async def ping():
     return "pong"
 
 
-@flask_app.route('/v1/chat/completions/', methods=['GET', 'POST'])
+@flask_app.route('/v1/chat/completions/', methods=['GET', 'POST'], )
 async def get_completion():
     if request.method == 'POST':
-        response = await get_scrap_completion(request.json['model'], request.json['messages'])
+        response = await get_scrap_completion(request.json['model'], request.json['messages'], request.json['max_tokens'])
         if response is None:
             return {'error': 'no completion available'}
         return {
