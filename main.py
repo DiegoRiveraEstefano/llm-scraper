@@ -5,7 +5,7 @@ import g4f
 from flask_cors import CORS
 
 flask_app = Flask(__name__)
-cors = CORS(flask_app, resources={r"/v1/chat/completions/": {"origins": "*"}})
+cors = CORS(flask_app, resources={r"/v1/chat/completions/": {"origins": "llm-scraper-production.up.railway.app"}})
 
 providers = {
     'gpt-3.5-turbo': [
@@ -54,7 +54,7 @@ async def ping():
     return "pong"
 
 
-@flask_app.route('/v1/chat/completions/', methods=['POST'], )
+@flask_app.route('/v1/chat/completions/', methods=['POST'])
 async def get_completion():
     print(request.method)
     if request.method == 'POST':
@@ -72,7 +72,7 @@ async def get_completion():
                 }
             ]
         }
-    return {'error': 'no completion available'}
+    return {'error': 'no post'}
 
 
 app = WsgiToAsgi(flask_app)

@@ -2,8 +2,8 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "gunicorn main:app -w 2 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT --capture-output --log-level debug"
-#startCommand = "uvicorn main:app --host 0.0.0.0 --port $PORT"
+#startCommand = "gunicorn main:app -w 2 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT --capture-output --log-level debug"
+startCommand = "uvicorn main:app --host 0.0.0.0 --port $PORT"
 numReplicas = 1
 sleepApplication = false
 restartPolicyType = "ON_FAILURE"
