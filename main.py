@@ -54,7 +54,7 @@ async def ping():
     return "pong"
 
 
-@flask_app.route('/v1/chat/completions/', methods=['GET', 'POST'], )
+@flask_app.route('/v1/chat/completions/', methods=['POST'], )
 async def get_completion():
     print(request.method)
     if request.method == 'POST':
