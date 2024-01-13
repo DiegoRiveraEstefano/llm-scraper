@@ -71,7 +71,7 @@ async def get_completion():
                 }
             ]
         }
-    return None
+    return {'error': 'no completion available'}
 
 
 app = WsgiToAsgi(flask_app)
